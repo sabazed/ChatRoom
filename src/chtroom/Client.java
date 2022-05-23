@@ -9,7 +9,7 @@ public class Client {
 
     private Socket client = null;
 
-    public Client() throws IOException {
+    public Client() {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the [address]:<port> of the server to connect (default localhost:8080): ");
@@ -31,6 +31,7 @@ public class Client {
                 } catch (Exception e) {
                     System.out.println("Wrong input! Please enter [address]:<port> input: ");
                     address = scanner.nextLine();
+                    if (address.isBlank()) address = "localhost:8080";
                 }
             }
 
@@ -61,10 +62,7 @@ public class Client {
                 System.out.println("Invalid nick! Please try again: ");
                 nick = in.nextLine();
             }
-            System.out.println("Connected to the server!");
             output.println(nick);
-            System.out.println("Welcome: " + nick + "!");
-
 
             Thread reader = new Thread() {
                 @Override
@@ -78,7 +76,11 @@ public class Client {
                     }
                     catch (IOException e) {
                         System.out.println("Connection interrupted!");
+                    }
+                    finally {
                         interrupt();
+                        in.close();
+                        output.close();
                     }
                 }
             };
@@ -99,7 +101,7 @@ public class Client {
 
     }
 
-    private static boolean validateNick(String nick) {
+    protected static boolean validateNick(String nick) {
         return !nick.isBlank() && nick.indexOf(':') == -1;
     }
 
