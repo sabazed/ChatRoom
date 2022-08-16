@@ -25,6 +25,9 @@ public class Client {
             while (!valid) {
                 try {
                     int semicolon = address.indexOf(':');
+                    if (address.charAt(0) == 'h') {
+                        semicolon = address.lastIndexOf(':');
+                    }
                     ip = address.substring(0, semicolon);
                     port = Integer.parseInt(address.substring(semicolon + 1));
                     valid = true;

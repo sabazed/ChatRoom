@@ -16,6 +16,14 @@ public class Server {
     private Object lock;
     private ServerSocket server;
 
+    private static HashMap<String, Integer> commands = new HashMap<>();;
+    static {
+        commands.put("/help", 0);
+        commands.put("/exit", 1);
+        commands.put("/send", 2);
+        commands.put("/nick", 3);
+    }
+
     private Server(int port) throws IOException {
         server = null;
         try {
@@ -134,6 +142,10 @@ public class Server {
 
                 String out;
                 while ((out = reader.readLine()) != null) {
+                    int cmd = commands.get(out.substring(0, 4));
+                    switch (cmd) {
+                        case 0 ->
+                    }
                     sendMessage(out, nick.toString());
                 }
             }
